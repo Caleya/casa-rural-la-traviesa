@@ -40,7 +40,8 @@ export const fotos = [
   },
 ];
 
-export const FOTO_PRINCIPAL = fotos[0].src;
+export const FOTO_PRINCIPAL =
+  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/651829900.jpg?k=2d990c89aa92c7b24c7e846d58d863d6bb6e433270f19f681e3f8de23b71a902&o=";
 
 export const valoraciones = [
   { etiqueta: "Personal", nota: 9.0 },
