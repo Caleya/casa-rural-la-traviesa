@@ -14,9 +14,7 @@ export function Galeria() {
             key={f.src}
             type="button"
             onClick={() => setActiva(i)}
-            className={`group overflow-hidden rounded-lg border border-border bg-muted ${
-              i === 0 ? "col-span-2 row-span-2" : ""
-            }`}
+            className="group aspect-[4/3] overflow-hidden rounded-lg border border-border bg-muted"
           >
             <img
               src={f.src}
