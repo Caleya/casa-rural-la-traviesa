@@ -1,9 +1,13 @@
 export const BOOKING_URL =
   "https://www.booking.com/hotel/es/la-traviesa-casa-rural.es.html";
 
-export const CONTACT_EMAIL = "reservas@latraviesacasarural.es";
+export const CONTACT_EMAIL = "casarurallaplata@gmail.com";
+
+export const TELEFONO = "691 23 12 48";
+export const TELEFONO_TEL = "+34691231248";
 
 export const DIRECCION = "Calle Mayor, 4, 06894 Aljucén, Badajoz";
+
 
 export const fotos = [
   {
@@ -53,15 +57,16 @@ export const valoraciones = [
 ];
 
 export const servicios = [
-  { titulo: "Piscina exterior", texto: "Piscina privada de temporada al aire libre." },
-  { titulo: "Jardín y barbacoa", texto: "Zona exterior con jardín y barbacoa para usar a tu aire." },
-  { titulo: "Parking gratis", texto: "Aparcamiento gratuito junto a la casa." },
-  { titulo: "WiFi gratis", texto: "Conexión wifi gratuita en todo el alojamiento." },
-  { titulo: "Admite mascotas", texto: "Tus animales de compañía son bienvenidos." },
-  { titulo: "Cocina equipada", texto: "Cocina completa, zona de comedor y lavadero." },
-  { titulo: "Habitaciones familiares", texto: "Cinco dormitorios y cinco baños para grupos grandes." },
-  { titulo: "Vistas y terraza", texto: "Terraza y balcón con vistas al pueblo y a la montaña." },
-];
+  { icono: "piscina", titulo: "Piscina exterior", texto: "Piscina privada de temporada al aire libre." },
+  { icono: "barbacoa", titulo: "Jardín y barbacoa", texto: "Zona exterior con jardín y barbacoa para usar a tu aire." },
+  { icono: "parking", titulo: "Parking gratis", texto: "Aparcamiento gratuito junto a la casa." },
+  { icono: "wifi", titulo: "WiFi gratis", texto: "Conexión wifi gratuita en todo el alojamiento." },
+  { icono: "mascotas", titulo: "Admite mascotas", texto: "Tus animales de compañía son bienvenidos." },
+  { icono: "cocina", titulo: "Cocina equipada", texto: "Cocina completa, zona de comedor y lavadero." },
+  { icono: "familias", titulo: "Habitaciones familiares", texto: "Cinco dormitorios y cinco baños para grupos grandes." },
+  { icono: "vistas", titulo: "Vistas y terraza", texto: "Terraza y balcón con vistas al pueblo y a la montaña." },
+] as const;
+
 
 export const entorno = [
   { titulo: "Acueducto de los Milagros", texto: "A 15 km, en Mérida." },

@@ -1,17 +1,44 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { MapPin, Star } from "lucide-react";
+import {
+  MapPin,
+  Star,
+  Phone,
+  Waves,
+  Flame,
+  Car,
+  Wifi,
+  Dog,
+  CookingPot,
+  Users,
+  Mountain,
+  type LucideIcon,
+} from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Galeria } from "@/components/Galeria";
-import { FormularioContacto } from "@/components/FormularioContacto";
+import { FormularioParteEntrada } from "@/components/FormularioParteEntrada";
 import {
   BOOKING_URL,
   CONTACT_EMAIL,
   DIRECCION,
   FOTO_PRINCIPAL,
+  TELEFONO,
+  TELEFONO_TEL,
   entorno,
   servicios,
   valoraciones,
 } from "@/lib/casa";
+
+const iconos: Record<string, LucideIcon> = {
+  piscina: Waves,
+  barbacoa: Flame,
+  parking: Car,
+  wifi: Wifi,
+  mascotas: Dog,
+  cocina: CookingPot,
+  familias: Users,
+  vistas: Mountain,
+};
+
 
 const TITULO = "La Traviesa Casa Rural — Casa completa con piscina en Aljucén, Badajoz";
 const DESCRIPCION =
@@ -91,22 +118,34 @@ function Index() {
                   <Star className="size-4 fill-current" />
                   8,9 · Fabuloso — 23 comentarios en Booking
                 </p>
-                <div className="mt-8 flex flex-wrap gap-3">
+                <div className="mt-8 flex flex-wrap items-center gap-3">
                   <a
-                    href={BOOKING_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="rounded-md bg-accent px-6 py-3 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90"
+                    href={`tel:${TELEFONO_TEL}`}
+                    className="inline-flex items-center gap-2 rounded-md bg-accent px-7 py-4 text-base font-semibold text-accent-foreground shadow-lg transition-opacity hover:opacity-90"
                   >
-                    Reservar en Booking
+                    <Phone className="size-5" />
+                    Reserva por teléfono: {TELEFONO}
                   </a>
                   <a
                     href="#contacto"
                     className="rounded-md border border-background/70 px-6 py-3 text-sm font-medium transition-colors hover:bg-background/15"
                   >
-                    Consultar disponibilidad
+                    Rellenar parte de entrada
                   </a>
                 </div>
+                <p className="mt-3 text-sm opacity-90">
+                  Atendemos llamadas todos los días de 9:00 a 21:00. También puedes{" "}
+                  <a
+                    href={BOOKING_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline underline-offset-4"
+                  >
+                    reservar en Booking
+                  </a>
+                  .
+                </p>
+
               </div>
             </div>
           </div>
