@@ -1,17 +1,44 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { MapPin, Star } from "lucide-react";
+import {
+  MapPin,
+  Star,
+  Phone,
+  Waves,
+  Flame,
+  Car,
+  Wifi,
+  Dog,
+  CookingPot,
+  Users,
+  Mountain,
+  type LucideIcon,
+} from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Galeria } from "@/components/Galeria";
-import { FormularioContacto } from "@/components/FormularioContacto";
+import { FormularioParteEntrada } from "@/components/FormularioParteEntrada";
 import {
   BOOKING_URL,
   CONTACT_EMAIL,
   DIRECCION,
   FOTO_PRINCIPAL,
+  TELEFONO,
+  TELEFONO_TEL,
   entorno,
   servicios,
   valoraciones,
 } from "@/lib/casa";
+
+const iconos: Record<string, LucideIcon> = {
+  piscina: Waves,
+  barbacoa: Flame,
+  parking: Car,
+  wifi: Wifi,
+  mascotas: Dog,
+  cocina: CookingPot,
+  familias: Users,
+  vistas: Mountain,
+};
+
 
 const TITULO = "La Traviesa Casa Rural — Casa completa con piscina en Aljucén, Badajoz";
 const DESCRIPCION =
