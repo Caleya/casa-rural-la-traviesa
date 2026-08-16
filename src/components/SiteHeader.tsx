@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
-import { BOOKING_URL } from "@/lib/casa";
+import { Menu, X, Phone } from "lucide-react";
+import { TELEFONO, TELEFONO_TEL } from "@/lib/casa";
 
 const enlaces = [
   { href: "#la-casa", texto: "La casa" },
   { href: "#galeria", texto: "Galería" },
   { href: "#servicios", texto: "Servicios" },
   { href: "#entorno", texto: "Entorno" },
-  { href: "#contacto", texto: "Contacto" },
+  { href: "#contacto", texto: "Parte de entrada" },
 ];
 
 export function SiteHeader() {
@@ -37,12 +37,12 @@ export function SiteHeader() {
 
         <div className="flex items-center gap-2">
           <a
-            href={BOOKING_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90 sm:inline-flex"
+            href={`tel:${TELEFONO_TEL}`}
+            className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
           >
-            Reservar en Booking
+            <Phone className="size-4" />
+            <span className="hidden sm:inline">Reservar: {TELEFONO}</span>
+            <span className="sm:hidden">Llamar</span>
           </a>
           <button
             type="button"
@@ -68,12 +68,10 @@ export function SiteHeader() {
             </a>
           ))}
           <a
-            href={BOOKING_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-2 block rounded-md bg-accent px-4 py-2 text-center text-sm font-medium text-accent-foreground"
+            href={`tel:${TELEFONO_TEL}`}
+            className="mt-2 block rounded-md bg-primary px-4 py-2 text-center text-sm font-medium text-primary-foreground"
           >
-            Reservar en Booking
+            Llamar al {TELEFONO}
           </a>
         </nav>
       )}
