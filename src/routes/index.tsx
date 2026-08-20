@@ -130,11 +130,11 @@ function Index() {
                     href="#contacto"
                     className="rounded-md border border-background/70 px-6 py-3 text-sm font-medium transition-colors hover:bg-background/15"
                   >
-                    Rellenar parte de entrada
+                    Formulario de entrada
                   </a>
                 </div>
                 <p className="mt-3 text-sm opacity-90">
-                  Atendemos llamadas todos los días de 9:00 a 21:00. También puedes{" "}
+                  Atendemos llamadas todos los días de 9:00 a 21:00. Si prefieres una alternativa, también puedes{" "}
                   <a
                     href={BOOKING_URL}
                     target="_blank"
@@ -198,12 +198,20 @@ function Index() {
         <section id="servicios" className="mx-auto max-w-6xl px-5 py-20">
           <h2 className="font-serif text-3xl font-semibold sm:text-4xl">Servicios</h2>
           <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {servicios.map((s) => (
-              <div key={s.titulo} className="rounded-xl border border-border bg-card p-5">
-                <h3 className="font-serif text-lg font-semibold">{s.titulo}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{s.texto}</p>
-              </div>
-            ))}
+            {servicios.map((s) => {
+              const IconComponent = iconos[s.icono];
+              return (
+                <div key={s.titulo} className="rounded-xl border border-border bg-card p-5">
+                  {IconComponent && (
+                    <div className="mb-3 flex items-center justify-center">
+                      <IconComponent className="size-10 text-primary" />
+                    </div>
+                  )}
+                  <h3 className="font-serif text-lg font-semibold">{s.titulo}</h3>
+                  <p className="mt-2 text-sm text-muted-foreground">{s.texto}</p>
+                </div>
+              );
+            })}
           </div>
         </section>
 
@@ -279,17 +287,21 @@ function Index() {
           <div className="mx-auto grid max-w-6xl gap-10 px-5 lg:grid-cols-[1fr_1.2fr]">
             <div>
               <h2 className="font-serif text-3xl font-semibold sm:text-4xl">
-                Consulta disponibilidad
+                Parte de entrada
               </h2>
               <p className="mt-4 text-muted-foreground">
-                Escríbenos con tus fechas y te respondemos con la disponibilidad y el precio. Si
-                prefieres reservar al momento, puedes hacerlo directamente en Booking.
+                Rellena el formulario con tus datos y fechas. Te contactaremos por teléfono para confirmar la disponibilidad y los detalles de la reserva.
               </p>
               <p className="mt-6 flex items-start gap-2 text-sm text-muted-foreground">
                 <MapPin className="mt-0.5 size-4 shrink-0" />
                 {DIRECCION}
               </p>
-              <p className="mt-2 text-sm text-muted-foreground">{CONTACT_EMAIL}</p>
+              <p className="mt-2 text-sm text-muted-foreground">
+                <strong>Teléfono:</strong> {TELEFONO}
+              </p>
+              <p className="mt-2 text-sm text-muted-foreground">
+                <strong>Correo:</strong> {CONTACT_EMAIL}
+              </p>
               <a
                 href={BOOKING_URL}
                 target="_blank"
@@ -299,7 +311,7 @@ function Index() {
                 Reservar en Booking
               </a>
             </div>
-            <FormularioContacto />
+            <FormularioParteEntrada />
           </div>
         </section>
       </main>
