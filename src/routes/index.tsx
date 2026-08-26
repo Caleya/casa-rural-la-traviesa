@@ -21,6 +21,7 @@ import {
   CONTACT_EMAIL,
   DIRECCION,
   FOTO_PRINCIPAL,
+  FOTO_PISCINA_BALCON,
   TELEFONO,
   TELEFONO_TEL,
   entorno,
@@ -42,7 +43,7 @@ const iconos: Record<string, LucideIcon> = {
 
 const TITULO = "La Traviesa Casa Rural — Casa completa con piscina en Aljucén, Badajoz";
 const DESCRIPCION =
-  "Casa rural completa de 200 m² en Aljucén: 5 dormitorios, 5 baños, piscina privada, barbacoa y jardín. A 15 km de Mérida. Admite mascotas y parking gratis.";
+  "Casa rural completa de 200 m² en Aljucén: 5 dormitorios, 5 baños, piscina privada, barbacoa y jardín. A 15 km de Mérida.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -134,18 +135,8 @@ function Index() {
                   </a>
                 </div>
                 <p className="mt-3 text-sm opacity-90">
-                  Atendemos llamadas todos los días de 9:00 a 21:00. Si prefieres una alternativa, también puedes{" "}
-                  <a
-                    href={BOOKING_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline underline-offset-4"
-                  >
-                    reservar en Booking
-                  </a>
-                  .
+                  Atendemos llamadas todos los días.
                 </p>
-
               </div>
             </div>
           </div>
@@ -188,7 +179,7 @@ function Index() {
           <div className="mx-auto max-w-6xl px-5">
             <h2 className="font-serif text-3xl font-semibold sm:text-4xl">Galería</h2>
             <p className="mt-3 mb-8 text-muted-foreground">
-              Fotografías del alojamiento publicadas en su ficha de Booking.
+              Fotografías del alojamiento.
             </p>
             <Galeria />
           </div>
@@ -259,7 +250,7 @@ function Index() {
         <section id="entorno" className="mx-auto max-w-6xl px-5 py-20">
           <h2 className="font-serif text-3xl font-semibold sm:text-4xl">El entorno</h2>
           <p className="mt-3 max-w-2xl text-muted-foreground">
-            Aljucén es un pueblo tranquilo del valle del mismo nombre, a un paso del conjunto
+            Aljucén es un pueblo tranquilo rodeado de naturaleza en Extremadura y a un paso del conjunto
             monumental de Mérida.
           </p>
           <div className="mt-8 grid gap-8 lg:grid-cols-2">
@@ -271,13 +262,24 @@ function Index() {
                 </li>
               ))}
             </ul>
-            <div className="overflow-hidden rounded-xl border border-border">
-              <iframe
-                title="Ubicación de La Traviesa Casa Rural en Aljucén"
-                src="https://www.openstreetmap.org/export/embed.html?bbox=-6.2%2C39.06%2C-6.12%2C39.11&layer=mapnik&marker=39.0862%2C-6.1622"
-                className="h-72 w-full lg:h-full"
-                loading="lazy"
-              />
+            <div
+              className="relative flex min-h-72 flex-col items-center justify-center overflow-hidden rounded-xl border border-border bg-cover bg-center p-8 text-center text-background lg:min-h-full"
+              style={{ backgroundImage: `url(${FOTO_PISCINA_BALCON})` }}
+            >
+              <div className="absolute inset-0 bg-foreground/55" />
+              <div className="relative flex flex-col items-center">
+                <MapPin className="size-10" />
+                <h3 className="mt-4 font-serif text-2xl font-semibold">Cómo llegar</h3>
+                <p className="mt-2 max-w-sm text-sm">{DIRECCION}</p>
+              <a
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(DIRECCION)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 inline-flex items-center rounded-md bg-background px-5 py-2.5 text-sm font-medium text-foreground transition-opacity hover:opacity-90"
+              >
+                Abrir en Google Maps
+              </a>
+              </div>
             </div>
           </div>
         </section>
@@ -303,12 +305,11 @@ function Index() {
                 <strong>Correo:</strong> {CONTACT_EMAIL}
               </p>
               <a
-                href={BOOKING_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-6 inline-block rounded-md border border-border bg-card px-5 py-2.5 text-sm font-medium transition-colors hover:bg-muted"
+                href={`tel:${TELEFONO_TEL}`}
+                className="mt-6 inline-flex items-center gap-2 rounded-md bg-accent px-5 py-2.5 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90"
               >
-                Reservar en Booking
+                <Phone className="size-4" />
+                Llamar al {TELEFONO}
               </a>
             </div>
             <FormularioParteEntrada />
@@ -319,7 +320,7 @@ function Index() {
       <footer className="border-t border-border py-10">
         <div className="mx-auto flex max-w-6xl flex-col gap-2 px-5 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <p>La Traviesa Casa Rural · {DIRECCION}</p>
-          <p>Disponibilidad y precios actualizados en Booking.com</p>
+          <p>© 2026 Casa Rural La Traviesa. Todos los derechos reservados.</p>
         </div>
       </footer>
     </div>

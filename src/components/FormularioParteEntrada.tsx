@@ -9,6 +9,8 @@ const opcional = (max: number) =>
 
 const esquema = z
   .object({
+    referencia: opcional(60),
+    contrato: z.string().min(1, "Indica la fecha del contrato"),
     entrada: z.string().min(1, "Indica la fecha de entrada"),
     salida: z.string().min(1, "Indica la fecha de salida"),
     personas: z.coerce.number().int().min(1, "Mínimo 1 persona").max(13, "Máximo 13 personas"),
@@ -20,6 +22,7 @@ const esquema = z
     tipoPago: texto(30, "Indica el tipo de pago"),
     medioPago: opcional(40),
     titularPago: opcional(80),
+    fechaPago: opcional(20),
     nombre: texto(50, "Indica el nombre"),
     apellido1: texto(50, "Indica el primer apellido"),
     apellido2: opcional(50),
@@ -38,6 +41,25 @@ const esquema = z
     provincia: texto(40, "Indica la provincia"),
     municipio: texto(40, "Indica el municipio"),
     cp: texto(10, "Indica el código postal"),
+    viajeroNombre: texto(50, "Indica el nombre del viajero"),
+    viajeroApellido1: texto(50, "Indica el primer apellido del viajero"),
+    viajeroApellido2: opcional(50),
+    viajeroNacimiento: z.string().min(1, "Indica la fecha de nacimiento del viajero"),
+    viajeroNacionalidad: texto(40, "Indica la nacionalidad del viajero"),
+    viajeroSexo: texto(20, "Indica el sexo del viajero"),
+    viajeroTipoDocumento: texto(20, "Indica el tipo de documento del viajero"),
+    viajeroDocumento: texto(20, "Indica el documento del viajero"),
+    viajeroSoporte: opcional(20),
+    viajeroTelefono: texto(20, "Indica el teléfono del viajero"),
+    viajeroTelefono2: opcional(20),
+    viajeroEmail: z.string().trim().email("Email del viajero no válido").max(120),
+    parentesco: texto(30, "Indica el parentesco"),
+    viajeroDireccion: texto(100, "Indica la dirección del viajero"),
+    viajeroDireccion2: opcional(100),
+    viajeroPais: texto(40, "Indica el país del viajero"),
+    viajeroProvincia: texto(40, "Indica la provincia del viajero"),
+    viajeroMunicipio: texto(40, "Indica el municipio del viajero"),
+    viajeroCp: texto(10, "Indica el código postal del viajero"),
   })
   .refine((d) => d.salida > d.entrada, {
     message: "La salida debe ser posterior a la entrada",
@@ -155,6 +177,8 @@ export function FormularioParteEntrada() {
     const d = res.data;
     const cuerpo = [
       "PARTE DE ENTRADA",
+      `Referencia: ${d.referencia || "-"}`,
+      `Fecha del contrato: ${d.contrato}`,
       `Fechas: ${d.entrada} a ${d.salida}`,
       `Personas: ${d.personas} · Habitaciones: ${d.habitaciones}`,
       "",
@@ -162,6 +186,7 @@ export function FormularioParteEntrada() {
       `Tipo de pago: ${d.tipoPago}`,
       `Medio de pago: ${d.medioPago || "-"}`,
       `Titular del pago: ${d.titularPago || "-"}`,
+      `Fecha de pago: ${d.fechaPago || "-"}`,
       "",
       "DATOS DEL TITULAR",
       `Nombre: ${d.nombre} ${d.apellido1} ${d.apellido2 || ""}`.trim(),
@@ -174,6 +199,18 @@ export function FormularioParteEntrada() {
       "DIRECCIÓN",
       `${d.direccion} ${d.direccion2 || ""}`.trim(),
       `${d.cp} ${d.municipio} (${d.provincia}), ${d.pais}`,
+      "",
+      "DATOS DEL VIAJERO",
+      `Nombre: ${d.viajeroNombre} ${d.viajeroApellido1} ${d.viajeroApellido2 || ""}`.trim(),
+      `Fecha de nacimiento: ${d.viajeroNacimiento}`,
+      `Nacionalidad: ${d.viajeroNacionalidad} · Sexo: ${d.viajeroSexo}`,
+      `Documento: ${d.viajeroTipoDocumento} ${d.viajeroDocumento} (soporte: ${d.viajeroSoporte || "-"})`,
+      `Teléfono: ${d.viajeroTelefono} · Adicional: ${d.viajeroTelefono2 || "-"}`,
+      `Email: ${d.viajeroEmail} · Parentesco: ${d.parentesco}`,
+      "",
+      "DIRECCIÓN DEL VIAJERO",
+      `${d.viajeroDireccion} ${d.viajeroDireccion2 || ""}`.trim(),
+      `${d.viajeroCp} ${d.viajeroMunicipio} (${d.viajeroProvincia}), ${d.viajeroPais}`,
     ].join("\n");
 
     window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
@@ -184,8 +221,9 @@ export function FormularioParteEntrada() {
 
   return (
     <form onSubmit={onSubmit} noValidate className="rounded-xl border border-border bg-card p-6">
-      <Titulo>Datos de la estancia</Titulo>
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-4 border-b border-border pb-5 sm:grid-cols-2 lg:grid-cols-3">
+        <Campo nombre="referencia" etiqueta="Referencia" maxLength={60} errores={errores} />
+        <Campo nombre="contrato" etiqueta="Fecha del contrato" tipo="date" errores={errores} />
         <Campo nombre="entrada" etiqueta="Fecha de entrada" tipo="date" errores={errores} />
         <Campo nombre="salida" etiqueta="Fecha de salida" tipo="date" errores={errores} />
         <Campo
@@ -207,7 +245,7 @@ export function FormularioParteEntrada() {
       </div>
 
       <Titulo>Información del pago</Titulo>
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Seleccion
           nombre="tipoPago"
           etiqueta="Tipo de pago"
@@ -216,10 +254,11 @@ export function FormularioParteEntrada() {
         />
         <Campo nombre="medioPago" etiqueta="Medio de pago" maxLength={40} errores={errores} />
         <Campo nombre="titularPago" etiqueta="Titular del pago" maxLength={80} errores={errores} />
+        <Campo nombre="fechaPago" etiqueta="Fecha de pago" tipo="date" errores={errores} />
       </div>
 
       <Titulo>Datos del titular</Titulo>
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Campo nombre="nombre" etiqueta="Nombre" maxLength={50} errores={errores} />
         <Campo nombre="apellido1" etiqueta="Primer apellido" maxLength={50} errores={errores} />
         <Campo nombre="apellido2" etiqueta="Segundo apellido" maxLength={50} errores={errores} />
@@ -267,7 +306,7 @@ export function FormularioParteEntrada() {
       </div>
 
       <Titulo>Dirección del titular</Titulo>
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Campo nombre="direccion" etiqueta="Dirección" maxLength={100} errores={errores} />
         <Campo
           nombre="direccion2"
@@ -279,6 +318,96 @@ export function FormularioParteEntrada() {
         <Campo nombre="provincia" etiqueta="Provincia" maxLength={40} errores={errores} />
         <Campo nombre="municipio" etiqueta="Municipio" maxLength={40} errores={errores} />
         <Campo nombre="cp" etiqueta="Código postal" maxLength={10} errores={errores} />
+      </div>
+
+      <Titulo>Datos del viajero</Titulo>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <Campo nombre="viajeroNombre" etiqueta="Nombre" maxLength={50} errores={errores} />
+        <Campo
+          nombre="viajeroApellido1"
+          etiqueta="Primer apellido"
+          maxLength={50}
+          errores={errores}
+        />
+        <Campo
+          nombre="viajeroApellido2"
+          etiqueta="Segundo apellido"
+          maxLength={50}
+          errores={errores}
+        />
+        <Campo
+          nombre="viajeroNacimiento"
+          etiqueta="Fecha de nacimiento"
+          tipo="date"
+          errores={errores}
+        />
+        <Campo
+          nombre="viajeroNacionalidad"
+          etiqueta="Nacionalidad"
+          maxLength={40}
+          errores={errores}
+        />
+        <Seleccion
+          nombre="viajeroSexo"
+          etiqueta="Sexo"
+          opciones={["Hombre", "Mujer", "Otro"]}
+          errores={errores}
+        />
+        <Seleccion
+          nombre="viajeroTipoDocumento"
+          etiqueta="Tipo de documento"
+          opciones={["DNI", "NIE", "Pasaporte"]}
+          errores={errores}
+        />
+        <Campo
+          nombre="viajeroDocumento"
+          etiqueta="Documento"
+          maxLength={20}
+          errores={errores}
+        />
+        <Campo
+          nombre="viajeroSoporte"
+          etiqueta="Soporte del documento"
+          maxLength={20}
+          errores={errores}
+        />
+        <Campo
+          nombre="viajeroTelefono"
+          etiqueta="Teléfono"
+          tipo="tel"
+          maxLength={20}
+          errores={errores}
+        />
+        <Campo
+          nombre="viajeroTelefono2"
+          etiqueta="Teléfono adicional"
+          tipo="tel"
+          maxLength={20}
+          errores={errores}
+        />
+        <Campo
+          nombre="viajeroEmail"
+          etiqueta="Correo electrónico"
+          tipo="email"
+          maxLength={120}
+          errores={errores}
+        />
+        <Campo nombre="parentesco" etiqueta="Parentesco" maxLength={30} errores={errores} />
+      </div>
+
+      <Titulo>Dirección del viajero</Titulo>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <Campo nombre="viajeroDireccion" etiqueta="Dirección" maxLength={100} errores={errores} />
+        <Campo
+          nombre="viajeroDireccion2"
+          etiqueta="Dirección adicional"
+          maxLength={100}
+          errores={errores}
+        />
+        <Campo nombre="viajeroPais" etiqueta="País" maxLength={40} errores={errores} />
+        <Campo nombre="viajeroProvincia" etiqueta="Provincia" maxLength={40} errores={errores} />
+        <Campo nombre="viajeroMunicipio" etiqueta="Municipio" maxLength={40} errores={errores} />
+        <Campo nombre="viajeroCp" etiqueta="Código postal" maxLength={10} errores={errores} />
       </div>
 
       <button

@@ -9,43 +9,34 @@ export const TELEFONO_TEL = "+34691231248";
 export const DIRECCION = "Calle Mayor, 4, 06894 Aljucén, Badajoz";
 
 
-export const fotos = [
-  {
-    src: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/651829900.jpg?k=2d990c89aa92c7b24c7e846d58d863d6bb6e433270f19f681e3f8de23b71a902&o=",
-    alt: "Dormitorio de La Traviesa Casa Rural con cama de matrimonio y espejo",
-  },
-  {
-    src: "https://cf.bstatic.com/xdata/images/hotel/max500/651829935.jpg?k=cedafd7f8d1d48ba01cff5f64bd6a0b6ed38c3a4113ed15fe4a9d1c5a48f96a6&o=",
-    alt: "Piscina exterior de temporada de la casa rural en Aljucén",
-  },
-  {
-    src: "https://cf.bstatic.com/xdata/images/hotel/max500/651829960.jpg?k=b8c642ad0764923775787b408ed7f25fe92889997fa0b875da8b0b06bfe5dc20&o=",
-    alt: "Salón de la casa con sofá y mesa",
-  },
-  {
-    src: "https://cf.bstatic.com/xdata/images/hotel/max500/651829945.jpg?k=e0d502cab4a4cef2e0d6bf1dc2473801904d1d402664f3a361f0d812aa9ab2a9&o=",
-    alt: "Habitación con dos camas individuales",
-  },
-  {
-    src: "https://cf.bstatic.com/xdata/images/hotel/max500/651829973.jpg?k=106826283c9b4dd37e0d15a8ddbab9774ceeb88627214cc5cacab985cc547e81&o=",
-    alt: "Baño con dos lavabos e inodoro",
-  },
-  {
-    src: "https://cf.bstatic.com/xdata/images/hotel/max500/651829942.jpg?k=37ac00c1050bbe26c5b233e433bbee09576645c5f7c1a09e8237b45df058507f&o=",
-    alt: "Exterior de la casa rural con piscina y jardín",
-  },
-  {
-    src: "https://cf.bstatic.com/xdata/images/hotel/max500/651829916.jpg?k=35959e406057a89be6816203bf1a4f6f817ddf1a584b64519dfb18a663aeeb06&o=",
-    alt: "Lavadero equipado de la casa",
-  },
-  {
-    src: "https://cf.bstatic.com/xdata/images/hotel/max500/651829969.jpg?k=b689506d8ba7cf808dcfbb9a978d81ad62b6b09d5e38592662ccb7764b38623f&o=",
-    alt: "Dormitorio con dos camas y baño propio",
-  },
-];
+const imagenes = import.meta.glob("../assets/*.{jpg,jpeg,png,webp}", {
+  eager: true,
+  import: "default",
+  query: "?url",
+}) as Record<string, string>;
 
-export const FOTO_PRINCIPAL =
-  "https://cf.bstatic.com/xdata/images/hotel/max500/651829960.jpg?k=b8c642ad0764923775787b408ed7f25fe92889997fa0b875da8b0b06bfe5dc20&o=";
+export const fotos = Object.entries(imagenes)
+  .sort(([rutaA], [rutaB]) => rutaA.localeCompare(rutaB, undefined, { numeric: true }))
+  .map(([ruta, src]) => ({
+    src,
+    alt: `Fotografía de La Traviesa Casa Rural: ${ruta.split("/").pop()?.replace(/\.[^.]+$/, "")}`,
+  }));
+
+const gruposDeFotos = [
+  { titulo: "Dormitorios", indices: [0, 1, 2, 3, 4, 6, 7, 19, 24, 26, 27, 28, 34, 35, 36, 37] },
+  { titulo: "Baños", indices: [5, 15, 17, 29, 30] },
+  { titulo: "Salón y cocina", indices: [12, 13, 14, 18, 20, 21, 22, 23, 38] },
+  { titulo: "Exteriores y piscina", indices: [8, 9, 10, 11, 31, 32, 33, 41, 43] },
+  { titulo: "Detalles y rincones", indices: [16, 25, 39, 40, 42, 44] },
+] as const;
+
+export const seccionesFotos = gruposDeFotos.map(({ titulo, indices }) => ({
+  titulo,
+  fotos: indices.map((indice) => fotos[indice]),
+}));
+
+export const FOTO_PRINCIPAL = fotos[0]?.src ?? "";
+export const FOTO_PISCINA_BALCON = fotos[31]?.src ?? FOTO_PRINCIPAL;
 
 export const valoraciones = [
   { etiqueta: "Personal", nota: 9.0 },
@@ -69,8 +60,8 @@ export const servicios = [
 
 
 export const entorno = [
-  { titulo: "Acueducto de los Milagros", texto: "A 15 km, en Mérida." },
-  { titulo: "Basílica de Santa Eulalia", texto: "A 16 km, en el conjunto monumental emeritense." },
+  { titulo: "Teatro Romano de Mérida", texto: "A solo 15 km." },
+  { titulo: "Dólmenes de Lácara", texto: "Monumento megalítico de la prehistoria, uno de los más grandes de la península ibérica." },
   { titulo: "Senderismo y ciclismo", texto: "Rutas por la sierra y el valle del Aljucén desde la puerta." },
   { titulo: "Aeropuerto de Badajoz", texto: "A 59 km por autovía." },
 ];
