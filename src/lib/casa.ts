@@ -3,8 +3,8 @@ export const BOOKING_URL =
 
 export const CONTACT_EMAIL = "casarurallaplata@gmail.com";
 
-export const TELEFONO = "691 23 12 48";
-export const TELEFONO_TEL = "+34691231248";
+export const TELEFONO = "615 66 32 49";
+export const TELEFONO_TEL = "+34615663249";
 
 export const DIRECCION = "Calle Mayor, 4, 06894 Aljucén, Badajoz";
 
