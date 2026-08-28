@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, Maximize2, X } from "lucide-react";
-import { fotos, seccionesFotos } from "@/lib/casa";
+import { fotosGaleria, seccionesFotos } from "@/lib/casa";
 
 export function Galeria() {
   const [activa, setActiva] = useState<number | null>(null);
-  const foto = activa === null ? null : fotos[activa];
+  const foto = activa === null ? null : fotosGaleria[activa];
 
   useEffect(() => {
     if (activa === null) return;
 
     const navegar = (event: KeyboardEvent) => {
       if (event.key === "Escape") setActiva(null);
-      if (event.key === "ArrowLeft") setActiva((indice) => (indice === null ? null : (indice - 1 + fotos.length) % fotos.length));
-      if (event.key === "ArrowRight") setActiva((indice) => (indice === null ? null : (indice + 1) % fotos.length));
+      if (event.key === "ArrowLeft") setActiva((indice) => (indice === null ? null : (indice - 1 + fotosGaleria.length) % fotosGaleria.length));
+      if (event.key === "ArrowRight") setActiva((indice) => (indice === null ? null : (indice + 1) % fotosGaleria.length));
     };
 
     window.addEventListener("keydown", navegar);
@@ -27,7 +27,7 @@ export function Galeria() {
             <h3 className="mb-5 font-serif text-2xl font-semibold">{seccion.titulo}</h3>
             <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
               {seccion.fotos.map((f) => {
-                const indice = fotos.indexOf(f);
+                const indice = fotosGaleria.indexOf(f);
                 return (
                   <button
                     key={f.src}
@@ -73,7 +73,7 @@ export function Galeria() {
             aria-label="Imagen anterior"
             onClick={(event) => {
               event.stopPropagation();
-              setActiva((indice) => (indice === null ? null : (indice - 1 + fotos.length) % fotos.length));
+              setActiva((indice) => (indice === null ? null : (indice - 1 + fotosGaleria.length) % fotosGaleria.length));
             }}
             className="absolute left-4 rounded-md bg-background/90 p-2 text-foreground sm:left-8"
           >
@@ -90,7 +90,7 @@ export function Galeria() {
             aria-label="Imagen siguiente"
             onClick={(event) => {
               event.stopPropagation();
-              setActiva((indice) => (indice === null ? null : (indice + 1) % fotos.length));
+              setActiva((indice) => (indice === null ? null : (indice + 1) % fotosGaleria.length));
             }}
             className="absolute right-4 rounded-md bg-background/90 p-2 text-foreground sm:right-8"
           >

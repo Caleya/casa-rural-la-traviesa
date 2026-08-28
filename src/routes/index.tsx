@@ -114,7 +114,7 @@ function Index() {
                   <MapPin className="size-4" /> Aljucén · Badajoz
                 </p>
                 <h1 className="mt-4 max-w-3xl font-serif text-4xl leading-tight font-semibold sm:text-6xl">
-                  Una casa entera para los tuyos, con piscina y silencio de pueblo
+                  Una casa entera para los tuyos, con piscina y barbacoa en Aljucén
                 </h1>
                 <p className="mt-4 max-w-xl text-base opacity-95">
                   200 m², cinco dormitorios y cinco baños a quince minutos de Mérida.

@@ -22,6 +22,8 @@ export const fotos = Object.entries(imagenes)
     alt: `Fotografía de La Traviesa Casa Rural: ${ruta.split("/").pop()?.replace(/\.[^.]+$/, "")}`,
   }));
 
+const fotosExcluidas = new Set(["1000150542.jpg", "1000150533.jpg"]);
+
 const gruposDeFotos = [
   { titulo: "Dormitorios", indices: [0, 1, 2, 3, 4, 6, 7, 19, 24, 26, 27, 28, 34, 35, 36, 37] },
   { titulo: "Baños", indices: [5, 15, 17, 29, 30] },
@@ -32,8 +34,10 @@ const gruposDeFotos = [
 
 export const seccionesFotos = gruposDeFotos.map(({ titulo, indices }) => ({
   titulo,
-  fotos: indices.map((indice) => fotos[indice]),
+  fotos: indices.map((indice) => fotos[indice]).filter((foto) => !fotosExcluidas.has(foto.alt.split(": ").pop() + ".jpg")),
 }));
+
+export const fotosGaleria = seccionesFotos.flatMap((seccion) => seccion.fotos);
 
 export const FOTO_PRINCIPAL = fotos[8]?.src ?? "";
 export const FOTO_PISCINA_BALCON = fotos[31]?.src ?? FOTO_PRINCIPAL;
