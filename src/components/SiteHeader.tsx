@@ -7,7 +7,7 @@ const enlaces = [
   { href: "#galeria", texto: "Galería" },
   { href: "#servicios", texto: "Servicios" },
   { href: "#entorno", texto: "Entorno" },
-  { href: "#contacto", texto: "Parte de entrada" },
+  { href: "#reservar", texto: "Parte de entrada" },
 ];
 
 export function SiteHeader() {

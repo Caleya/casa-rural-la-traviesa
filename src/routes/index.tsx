@@ -11,6 +11,10 @@ import {
   CookingPot,
   Users,
   Mountain,
+  Mail,
+  Clock,
+  ExternalLink,
+  CalendarCheck,
   type LucideIcon,
 } from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
@@ -128,7 +132,7 @@ function Index() {
                     Reserva por teléfono: {TELEFONO}
                   </a>
                   <a
-                    href="#contacto"
+                    href="#reservar"
                     className="rounded-md border border-background/70 px-6 py-3 text-sm font-medium transition-colors hover:bg-background/15"
                   >
                     Formulario de entrada
@@ -284,35 +288,113 @@ function Index() {
           </div>
         </section>
 
-        {/* Contacto */}
-        <section id="contacto" className="border-t border-border bg-secondary/50 py-20">
-          <div className="mx-auto grid max-w-6xl gap-10 px-5 lg:grid-cols-[1fr_1.2fr]">
-            <div>
-              <h2 className="font-serif text-3xl font-semibold sm:text-4xl">
-                Parte de entrada
+        {/* Solicitud de reserva */}
+        <section id="reservar" className="border-t border-border bg-secondary/50 py-20 sm:py-28">
+          <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+            <div className="mb-10 text-center">
+              <span className="text-sm font-semibold uppercase tracking-wider text-primary">
+                Reserva directa
+              </span>
+              <h2 className="mt-3 font-serif text-3xl font-bold text-foreground sm:text-4xl">
+                Formulario de reserva
               </h2>
-              <p className="mt-4 text-muted-foreground">
-                Rellena el formulario con tus datos y fechas. Te contactaremos por teléfono para confirmar la disponibilidad y los detalles de la reserva.
+              <p className="mx-auto mt-4 max-w-2xl font-serif text-xl font-bold text-foreground">
+                Obligatorio rellenar todos los campos y enviar después de concretar fecha de reserva
+                por teléfono.
               </p>
-              <p className="mt-6 flex items-start gap-2 text-sm text-muted-foreground">
-                <MapPin className="mt-0.5 size-4 shrink-0" />
-                {DIRECCION}
+              <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
+                Rellena el formulario y te generamos un PDF del parte de entrada de viajeros, listo
+                para enviárnoslo por correo. ¿Algún problema? Llámanos al{" "}
+                <a href={`tel:${TELEFONO_TEL}`} className="font-semibold text-primary hover:underline">
+                  {TELEFONO}
+                </a>
+                .
               </p>
-              <p className="mt-2 text-sm text-muted-foreground">
-                <strong>Teléfono:</strong> {TELEFONO}
-              </p>
-              <p className="mt-2 text-sm text-muted-foreground">
-                <strong>Correo:</strong> {CONTACT_EMAIL}
-              </p>
-              <a
-                href={`tel:${TELEFONO_TEL}`}
-                className="mt-6 inline-flex items-center gap-2 rounded-md bg-accent px-5 py-2.5 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90"
-              >
-                <Phone className="size-4" />
-                Llamar al {TELEFONO}
-              </a>
             </div>
-            <FormularioParteEntrada />
+            <div className="rounded-2xl border border-border bg-card p-4 shadow-sm sm:p-6">
+              <FormularioParteEntrada />
+            </div>
+          </div>
+        </section>
+
+        {/* Contacto */}
+        <section id="contacto" className="border-t border-primary-foreground/10 bg-[oklch(0.38_0.08_242)] py-20 text-primary-foreground sm:py-24">
+          <div className="mx-auto max-w-6xl px-5">
+            <div className="grid gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary-foreground/75">
+                  Estamos aquí para ayudarte
+                </p>
+                <h2 className="mt-3 font-serif text-4xl font-semibold sm:text-5xl">Hablemos de tu estancia</h2>
+                <p className="mt-5 max-w-xl text-lg leading-relaxed text-primary-foreground/85">
+                  Cuéntanos qué necesitas y te ayudaremos a organizar tu visita a Aljucén. Para
+                  consultar fechas disponibles, la forma más rápida es llamarnos directamente.
+                </p>
+
+                <div className="mt-8 grid gap-5 sm:grid-cols-2">
+                  <div className="border-l border-primary-foreground/30 pl-4">
+                    <MapPin className="mb-3 size-5" />
+                    <h3 className="font-semibold">Dónde estamos</h3>
+                    <p className="mt-1 text-sm text-primary-foreground/80">{DIRECCION}</p>
+                  </div>
+                  <div className="border-l border-primary-foreground/30 pl-4">
+                    <Phone className="mb-3 size-5" />
+                    <h3 className="font-semibold">Llámanos</h3>
+                    <a href={`tel:${TELEFONO_TEL}`} className="mt-1 inline-block text-lg font-semibold hover:underline">
+                      {TELEFONO}
+                    </a>
+                  </div>
+                  <div className="border-l border-primary-foreground/30 pl-4">
+                    <Mail className="mb-3 size-5" />
+                    <h3 className="font-semibold">Escríbenos</h3>
+                    <a href={`mailto:${CONTACT_EMAIL}`} className="mt-1 inline-block text-sm text-primary-foreground/80 hover:underline">
+                      {CONTACT_EMAIL}
+                    </a>
+                  </div>
+                  <div className="border-l border-primary-foreground/30 pl-4">
+                    <Clock className="mb-3 size-5" />
+                    <h3 className="font-semibold">Llegadas y salidas</h3>
+                    <p className="mt-1 text-sm text-primary-foreground/80">Entrada de 16:00 a 22:00</p>
+                    <p className="text-sm text-primary-foreground/80">Salida de 09:00 a 12:00</p>
+                  </div>
+                </div>
+
+                <div className="mt-9 flex flex-wrap gap-3">
+                  <a
+                    href={`tel:${TELEFONO_TEL}`}
+                    className="inline-flex items-center gap-2 rounded-md bg-primary-foreground px-15 py-3 font-semibold text-primary transition-opacity hover:opacity-90"
+                  >
+                    <Phone className="size-7" /> Llamar ahora
+                  </a>
+                  <a
+                    href="#reservar"
+                    className="inline-flex items-center gap-2 rounded-md border border-primary-foreground/40 px-5 py-3 font-medium transition-colors hover:bg-primary-foreground/10"
+                  >
+                    <CalendarCheck className="size-4" /> Ir al formulario
+                  </a>
+                </div>
+              </div>
+
+              <div className="rounded-2xl border border-primary-foreground/15 bg-primary-foreground/10 p-6 sm:p-8">
+                <p className="text-sm font-semibold uppercase tracking-wider text-primary-foreground/70">
+                  Planifica sin prisas
+                </p>
+                <h3 className="mt-3 font-serif text-2xl font-semibold">Todo listo para recibirte</h3>
+                <ul className="mt-6 space-y-4 text-primary-foreground/85">
+                  <li className="flex gap-3"><Waves className="mt-0.5 size-5 shrink-0" /><span>Piscina privada de temporada para disfrutar al aire libre.</span></li>
+                  <li className="flex gap-3"><Car className="mt-0.5 size-5 shrink-0" /><span>Parking gratuito junto al alojamiento.</span></li>
+                  <li className="flex gap-3"><Wifi className="mt-0.5 size-5 shrink-0" /><span>WiFi incluido en toda la casa.</span></li>
+                </ul>
+                <a
+                  href={`${BOOKING_URL}#availability`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-8 inline-flex items-center gap-2 text-sm font-semibold underline underline-offset-4 hover:text-primary-foreground/80"
+                >
+                  Consultar también en Booking.com <ExternalLink className="size-4" />
+                </a>
+              </div>
+            </div>
           </div>
         </section>
       </main>

@@ -35,7 +35,7 @@ export const seccionesFotos = gruposDeFotos.map(({ titulo, indices }) => ({
   fotos: indices.map((indice) => fotos[indice]),
 }));
 
-export const FOTO_PRINCIPAL = fotos[0]?.src ?? "";
+export const FOTO_PRINCIPAL = fotos[8]?.src ?? "";
 export const FOTO_PISCINA_BALCON = fotos[31]?.src ?? FOTO_PRINCIPAL;
 
 export const valoraciones = [
