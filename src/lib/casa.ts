@@ -1,12 +1,12 @@
 export const BOOKING_URL =
   "https://www.booking.com/hotel/es/la-traviesa-casa-rural.es.html";
 
-export const CONTACT_EMAIL = "casarurallaplata@gmail.com";
+export const CONTACT_EMAIL = "casarurallatraviesa@gmail.com";
 
 export const TELEFONO = "615 66 32 49";
 export const TELEFONO_TEL = "+34615663249";
 
-export const DIRECCION = "Calle Mayor, 4, 06894 Aljucén, Badajoz";
+export const DIRECCION = "La Traviesa Casa Rural, 4, 06894 Aljucén, Badajoz";
 
 
 const imagenes = import.meta.glob("../assets/*.{jpg,jpeg,png,webp}", {

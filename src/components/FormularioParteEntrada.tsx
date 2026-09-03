@@ -9,6 +9,7 @@ import { Download, Mail, CheckCircle2 } from "lucide-react";
 export const CONTACT_EMAIL = "casarurallaplata@gmail.com";
 const MAX = 60;
 const req = (msg: string) => z.string().trim().min(1, msg).max(MAX, `Máximo ${MAX} caracteres`);
+const optional = z.string().trim().max(MAX, `Máximo ${MAX} caracteres`);
 const num = (msg: string) =>
   z
     .string()
@@ -46,25 +47,25 @@ const schema = z.object({
   tProvincia: req("Indica la provincia"),
   tMunicipio: req("Indica el municipio"),
   tCodigoPostal: req("Indica el código postal"),
-  vNombre: req("Indica el nombre"),
-  vApellido1: req("Indica el primer apellido"),
-  vApellido2: req("Indica el segundo apellido"),
-  vNacimiento: z.string().min(1, "Indica la fecha de nacimiento"),
-  vNacionalidad: req("Indica la nacionalidad"),
-  vSexo: req("Indica el sexo"),
-  vTipoDoc: req("Indica el tipo de documento"),
-  vDocumento: req("Indica el documento"),
-  vSoporteDoc: req("Indica el soporte del documento"),
-  vTelefono: req("Indica un teléfono"),
-  vTelefono2: req("Indica un teléfono adicional"),
-  vEmail: z.string().trim().email("Email no válido").max(80, "Máximo 80 caracteres"),
-  vParentesco: req("Indica el parentesco"),
-  vDireccion: req("Indica la dirección"),
-  vDireccion2: req("Indica la dirección adicional"),
-  vPais: req("Indica el país"),
-  vProvincia: req("Indica la provincia"),
-  vMunicipio: req("Indica el municipio"),
-  vCodigoPostal: req("Indica el código postal"),
+  vNombre: optional,
+  vApellido1: optional,
+  vApellido2: optional,
+  vNacimiento: z.string(),
+  vNacionalidad: optional,
+  vSexo: optional,
+  vTipoDoc: optional,
+  vDocumento: optional,
+  vSoporteDoc: optional,
+  vTelefono: optional,
+  vTelefono2: optional,
+  vEmail: z.string().trim().email("Email no válido").or(z.literal("")),
+  vParentesco: optional,
+  vDireccion: optional,
+  vDireccion2: optional,
+  vPais: optional,
+  vProvincia: optional,
+  vMunicipio: optional,
+  vCodigoPostal: optional,
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -237,50 +238,13 @@ function buildPdf(v: FormValues) {
 
 const buildMailto = (v: FormValues) =>
   `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`Parte de entrada - ${v.tNombre} ${v.tApellido1} (${formatDate(v.entrada)} a ${formatDate(v.salida)})`)}&body=${encodeURIComponent(["Hola, aquí tienes que adjuntar el formulario descargado.", "", `Titular: ${v.tNombre} ${v.tApellido1} ${v.tApellido2}`.trim(), `Teléfono: ${v.tTelefono}`, `Entrada: ${formatDate(v.entrada)}`, `Salida: ${formatDate(v.salida)}`, `Personas: ${v.personas}`, "", "ADJUNTAR EL PDF DESCARGADO CON TODOS LOS DATOS."].join("\n"))}`;
-const TITULAR_TO_VIAJERO: Array<[FieldName, FieldName]> = [
-  ["tNombre", "vNombre"],
-  ["tApellido1", "vApellido1"],
-  ["tApellido2", "vApellido2"],
-  ["tNacimiento", "vNacimiento"],
-  ["tNacionalidad", "vNacionalidad"],
-  ["tSexo", "vSexo"],
-  ["tTipoDoc", "vTipoDoc"],
-  ["tDocumento", "vDocumento"],
-  ["tSoporteDoc", "vSoporteDoc"],
-  ["tTelefono", "vTelefono"],
-  ["tTelefono2", "vTelefono2"],
-  ["tEmail", "vEmail"],
-  ["tDireccion", "vDireccion"],
-  ["tDireccion2", "vDireccion2"],
-  ["tPais", "vPais"],
-  ["tProvincia", "vProvincia"],
-  ["tMunicipio", "vMunicipio"],
-  ["tCodigoPostal", "vCodigoPostal"],
-];
-
 export function FormularioParteEntrada() {
   const [values, setValues] = useState<FormValues>(initialValues);
   const [errors, setErrors] = useState<Partial<Record<FieldName, string>>>({});
-  const [sameAsTitular, setSameAsTitular] = useState(true);
   const [mailHref, setMailHref] = useState<string | null>(null);
-  const syncViajero = (source: FormValues) => {
-    const next = { ...source };
-    TITULAR_TO_VIAJERO.forEach(([from, to]) => {
-      next[to] = source[from] ?? "";
-    });
-    next.vParentesco = "Titular";
-    return next;
-  };
   const update = (field: FieldName, value: string) => {
-    setValues((previous) => {
-      const next = { ...previous, [field]: value };
-      return sameAsTitular ? syncViajero(next) : next;
-    });
+    setValues((previous) => ({ ...previous, [field]: value }));
     setErrors((previous) => ({ ...previous, [field]: undefined }));
-  };
-  const toggleSame = (checked: boolean) => {
-    setSameAsTitular(checked);
-    if (checked) setValues((previous) => syncViajero(previous));
   };
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -416,44 +380,28 @@ export function FormularioParteEntrada() {
         {renderField("tMunicipio", "Municipio")}
         {renderField("tCodigoPostal", "Código postal")}
       </Section>
-      <label className="flex items-center gap-3 rounded-xl bg-muted p-4 text-sm font-medium">
-        <input
-          type="checkbox"
-          checked={sameAsTitular}
-          onChange={(event) => toggleSame(event.target.checked)}
-          className="h-4 w-4 accent-primary"
-        />
-        Los datos del viajero son los mismos que los del titular
-      </label>
       <Section title="Datos del viajero">
-        {renderField("vNombre", "Nombre", { disabled: sameAsTitular })}
-        {renderField("vApellido1", "Primer apellido", { disabled: sameAsTitular })}
-        {renderField("vApellido2", "Segundo apellido", { disabled: sameAsTitular })}
-        {renderField("vNacimiento", "Fecha de nacimiento", {
-          type: "date",
-          disabled: sameAsTitular,
-        })}
-        {renderField("vNacionalidad", "Nacionalidad", { disabled: sameAsTitular })}
-        {renderSelect("vSexo", "Sexo", sexes, sameAsTitular)}
-        {renderSelect("vTipoDoc", "Tipo de documento", docTypes, sameAsTitular)}
-        {renderField("vDocumento", "Documento", { disabled: sameAsTitular })}
-        {renderField("vSoporteDoc", "Soporte del documento", { disabled: sameAsTitular })}
-        {renderField("vTelefono", "Teléfono", { type: "tel", disabled: sameAsTitular })}
-        {renderField("vTelefono2", "Teléfono adicional", { type: "tel", disabled: sameAsTitular })}
-        {renderField("vEmail", "Correo electrónico", {
-          type: "email",
-          disabled: sameAsTitular,
-          maxLength: 80,
-        })}
-        {renderField("vParentesco", "Parentesco", { disabled: sameAsTitular })}
+        {renderField("vNombre", "Nombre")}
+        {renderField("vApellido1", "Primer apellido")}
+        {renderField("vApellido2", "Segundo apellido")}
+        {renderField("vNacimiento", "Fecha de nacimiento", { type: "date" })}
+        {renderField("vNacionalidad", "Nacionalidad")}
+        {renderSelect("vSexo", "Sexo", sexes)}
+        {renderSelect("vTipoDoc", "Tipo de documento", docTypes)}
+        {renderField("vDocumento", "Documento")}
+        {renderField("vSoporteDoc", "Soporte del documento")}
+        {renderField("vTelefono", "Teléfono", { type: "tel" })}
+        {renderField("vTelefono2", "Teléfono adicional", { type: "tel" })}
+        {renderField("vEmail", "Correo electrónico", { type: "email", maxLength: 80 })}
+        {renderField("vParentesco", "Parentesco")}
       </Section>
       <Section title="Dirección del viajero">
-        {renderField("vDireccion", "Dirección", { disabled: sameAsTitular })}
-        {renderField("vDireccion2", "Dirección adicional", { disabled: sameAsTitular })}
-        {renderField("vPais", "País", { disabled: sameAsTitular })}
-        {renderField("vProvincia", "Provincia", { disabled: sameAsTitular })}
-        {renderField("vMunicipio", "Municipio", { disabled: sameAsTitular })}
-        {renderField("vCodigoPostal", "Código postal", { disabled: sameAsTitular })}
+        {renderField("vDireccion", "Dirección")}
+        {renderField("vDireccion2", "Dirección adicional")}
+        {renderField("vPais", "País")}
+        {renderField("vProvincia", "Provincia")}
+        {renderField("vMunicipio", "Municipio")}
+        {renderField("vCodigoPostal", "Código postal")}
       </Section>
       <Button type="submit" size="lg" className="w-full">
         <Download className="mr-2 h-5 w-5" />

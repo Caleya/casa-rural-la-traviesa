@@ -139,7 +139,7 @@ function Index() {
                   </a>
                 </div>
                 <p className="mt-3 text-sm opacity-90">
-                  Atendemos llamadas todos los días.
+                  Atendemos llamadas. Reserva rápida y sencilla.
                 </p>
               </div>
             </div>
@@ -164,7 +164,7 @@ function Index() {
             </div>
             <dl className="grid grid-cols-2 gap-4 self-start">
               {[
-                ["200 m²", "Superficie"],
+                ["300 m²", "Superficie"],
                 ["13", "Huéspedes"],
                 ["5", "Dormitorios"],
                 ["5", "Baños"],
